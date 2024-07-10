@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import SignupPage from './components/SignupPage';
+import SignInPage from './components/SigninPage';
+import TodoListPage from './components/TodoListPage';
 
-function App() {
+const App = () => {
+  const isAuthenticated = () => {
+    return !!localStorage.getItem('token');
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/signin" element={<SignInPage />} />
+        <Route path="/todolist" element={isAuthenticated() ? <TodoListPage /> : <Navigate to="/signin" />} />
+        <Route path="*" element={<Navigate to="/signin" />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
